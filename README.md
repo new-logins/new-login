@@ -1,3 +1,22 @@
+# Instagram Login Awareness Demo
+
+> ⚠️ **Educational Purpose Only**
+
+This project is created only for cybersecurity awareness and education.
+
+It demonstrates how phishing pages can look like legitimate Instagram login pages so users can learn to identify and avoid scams.
+
+## ⚠️ Warning
+
+- This project is for educational and security awareness purposes only.
+- Do NOT use this project to collect usernames or passwords.
+- Do NOT use this project for phishing, fraud, or any illegal activity.
+- No credentials should be stored or transmitted.
+- The author is not responsible for any misuse of this project.
+
+## Disclaimer
+
+This project is not affiliated with, endorsed by, or sponsored by Instagram or Meta. All trademarks belong to their respective owners.
 # Instagram Login Tracker
 
 A pixel-perfect Instagram login page clone that:
